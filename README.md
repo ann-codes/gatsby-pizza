@@ -5,7 +5,6 @@ Following the Wes Bos [MasterGatsby](https://github.com/wesbos/master-gatsby.git
 May need to delete `package-lock.json` and/or `yarn.lock` in order to install. 
 
 
-
 ### Course Notes
 
 <details>
@@ -41,8 +40,7 @@ export default function Nav() {
 ```
 </details>
 
-
 <details>
-<summary>y</summary>
-x
+<summary>Hot Keys</summary>
+- Select word and then edit next instance of it: Cmd + d
 </details>
