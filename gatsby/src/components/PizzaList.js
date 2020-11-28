@@ -33,7 +33,12 @@ function SinglePizza({ pizza }) {
           <span className="mark">{pizza.name}</span>
         </h3>
       </Link>
-      <p>{pizza.toppings.map((top) => top.name).join(', ')}</p>
+      <p>
+        {pizza.toppings
+          .map((top) => top.name)
+          .sort()
+          .join(', ')}
+      </p>
       <Img fluid={pizza.image.asset.fluid} alt={pizza.name} />
     </PizzaStyles>
   );

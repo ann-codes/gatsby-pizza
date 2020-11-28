@@ -21,6 +21,16 @@ export default {
         layout: 'checkbox',
       },
     },
+    {
+      // added slug, will need to create the field in cms
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 100,
+      },
+    },
   ],
   preview: {
     select: {

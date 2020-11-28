@@ -54,10 +54,12 @@ export default {
       veg1: 'toppings.1.vegetarian',
       veg2: 'toppings.2.vegetarian',
       veg3: 'toppings.3.vegetarian',
+      veg4: 'toppings.4.vegetarian',
       top0: 'toppings.0.name',
       top1: 'toppings.1.name',
       top2: 'toppings.2.name',
       top3: 'toppings.3.name',
+      top4: 'toppings.4.name',
     },
     prepare: ({ title, media, ...vegAndToppings }) => {
       const values = Object.values(vegAndToppings);
@@ -74,7 +76,7 @@ export default {
       return {
         title: `${title} ${isVeg ? '🌿' : ''}`,
         media,
-        subtitle: toppingList.join(', '),
+        subtitle: toppingList.sort().join(', '),
       };
     },
   },

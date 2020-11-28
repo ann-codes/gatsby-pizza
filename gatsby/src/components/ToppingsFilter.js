@@ -20,9 +20,14 @@ const ToppingStyles = styled.div`
       background: white;
       padding: 2px 5px;
     }
-    .active {
+    &[aria-current='page'] {
       background: var(--yellow);
     }
+    // need ampersand b/c it is a class
+    // don't need this because gatsby gives aria-current above
+    /* &.active {
+      background: var(--yellow);
+    } */
   }
 `;
 
