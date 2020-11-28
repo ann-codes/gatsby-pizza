@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { MdLocalPizza } from 'react-icons/md';
 import PriceInput from '../components/PriceInput';
 
@@ -53,27 +54,27 @@ export default {
       veg1: 'toppings.1.vegetarian',
       veg2: 'toppings.2.vegetarian',
       veg3: 'toppings.3.vegetarian',
-      topping0: 'toppings.0.name',
-      topping1: 'toppings.1.name',
-      topping2: 'toppings.2.name',
-      topping3: 'toppings.3.name',
+      top0: 'toppings.0.name',
+      top1: 'toppings.1.name',
+      top2: 'toppings.2.name',
+      top3: 'toppings.3.name',
     },
-    prepare: ({ title, media, veg0, veg1, veg2, veg3, ...toppings }) => {
-      const veg = [veg0, veg1, veg2, veg3];
-      console.log(veg);
-      const toppers = Object.values(toppings).filter(Boolean);
-      const isVeg = Object.values(toppings).reduce((ac, cv, idx) => {
-        if (cv) {
-          if (!veg[idx]) {
-            ac = false;
-          }
-        }
-        return ac;
+    prepare: ({ title, media, ...vegAndToppings }) => {
+      const values = Object.values(vegAndToppings);
+      const veg = values.slice(0, values.length / 2);
+      const tops = values.slice(values.length / 2, values.length);
+      const toppingList = tops.filter(Boolean);
+      const isVeg = tops.reduce((ans, ct, idx) => {
+        if (ct && !veg[idx]) ans = false;
+        return ans;
       }, true);
+      // alternative below, 2 loops
+      // const notVeg = veg.filter((v) => v !== undefined).includes(false);
+      // title: `${title} ${notVeg ? '' : '🌿'}`,
       return {
-        title,
+        title: `${title} ${isVeg ? '🌿' : ''}`,
         media,
-        subtitle: `${toppers.join(', ')} ${isVeg ? '🌿' : ''}`,
+        subtitle: toppingList.join(', '),
       };
     },
   },
