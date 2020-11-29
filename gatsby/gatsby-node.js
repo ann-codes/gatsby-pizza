@@ -1,4 +1,5 @@
 import path from 'path';
+import fetch from 'isomorphic-fetch';
 
 async function turnPizzasIntoPages({ graphql, actions }) {
   const pizzaTemplate = path.resolve('./src/templates/Pizza.js');
@@ -52,9 +53,6 @@ async function turnToppingsIntoPages({ graphql, actions }) {
       }
     }
   `);
-
-  console.log('DATA========================', data.toppings.nodes);
-
   data.toppings.nodes.forEach((top) => {
     actions.createPage({
       path: `topping/${top.name}`,
@@ -67,10 +65,38 @@ async function turnToppingsIntoPages({ graphql, actions }) {
   });
 }
 
+// video 26 pulling in data from external APIs
+// don't need to create a "turnBeersIntoPages" bc this fetches data
+async function fetchBeersAndTurnIntoNodes({
+  actions,
+  createNodeId,
+  createContentDigest,
+}) {
+  const res = await fetch('https://sampleapis.com/beers/api/ale');
+  const beers = await res.json();
+
+  for (const beer of beers) {
+    const nodeMeta = {
+      id: createNodeId(`beer-${beer.name}`),
+      parent: null,
+      children: [],
+      internal: {
+        type: 'Beer',
+        mediaType: 'application/json',
+        contentDigest: createContentDigest(beer),
+      },
+    };
+    actions.createNode({ ...beer, ...nodeMeta });
+  }
+}
+
+export async function sourceNodes(params) {
+  await Promise.all([fetchBeersAndTurnIntoNodes(params)]);
+}
+
 export async function createPages(params) {
   //   await turnPizzasIntoPages(params);
   //   await turnToppingsIntoPages(params);
-
   await Promise.all([
     turnPizzasIntoPages(params),
     turnToppingsIntoPages(params),
