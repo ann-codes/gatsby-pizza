@@ -5,14 +5,20 @@ import SEO from '../components/SEO';
 import useForm from '../utils/useForm';
 import calculatePizzaPrice from '../utils/calculatePizzaPrice';
 import formatMoney from '../utils/formatMoney';
+import usePizza from '../utils/usePizza';
 import OrderStyles from '../styles/OrderStyles';
 import MenuItemStyles from '../styles/MenuItemStyles';
+import PizzaOrder from '../components/PizzaOrder';
+import calculateOrderTotal from '../utils/calculateOrderTotal';
 
 export default function OrderPage({ data: { pizzas } }) {
-  console.log(pizzas);
-  // custom hook
+  const zas = pizzas.nodes;
+  // custom hooks
   const { values, updateValues } = useForm({ name: '', email: '' });
-
+  const { order, addToOrder, removeFromOrder } = usePizza({
+    zas,
+    inputs: values,
+  });
   const listPizzas = pizzas.nodes.map((za) => (
     <MenuItemStyles key={za.id}>
       <Img width="50" height="50" fluid={za.image.asset.fluid} alt={za.name} />
@@ -21,7 +27,7 @@ export default function OrderPage({ data: { pizzas } }) {
       </div>
       <div>
         {['S', 'M', 'L'].map((size) => (
-          <button type="button">
+          <button type="button" onClick={() => addToOrder({ id: za.id, size })}>
             {size} {formatMoney(calculatePizzaPrice(za.price, size))}
           </button>
         ))}
@@ -31,7 +37,7 @@ export default function OrderPage({ data: { pizzas } }) {
 
   return (
     <div>
-      <SEO title="Order a Pizza" />
+      <SEO title="Order a Pizza!" />
       <OrderStyles>
         <fieldset>
           <legend>Your Info</legend>
@@ -58,6 +64,14 @@ export default function OrderPage({ data: { pizzas } }) {
         </fieldset>
         <fieldset className="order">
           <legend>Order</legend>
+          <PizzaOrder
+            order={order}
+            removeFromOrder={removeFromOrder}
+            pizzas={zas}
+          />
+        </fieldset>
+        <fieldset>
+          <h3>Total: {formatMoney(calculateOrderTotal(order, zas))}</h3>
         </fieldset>
       </OrderStyles>
     </div>
