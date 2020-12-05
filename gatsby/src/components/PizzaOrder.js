@@ -8,7 +8,7 @@ export default function PizzaOrder({ order, pizzas, removeFromOrder }) {
   const orderList = order.map((anOrder, idx) => {
     const pizza = pizzas.find((za) => za.id === anOrder.id);
     return (
-      <MenuItemStyles key={anOrder.id}>
+      <MenuItemStyles key={anOrder.id + idx}>
         <Img fluid={pizza.image.asset.fluid} />
         <h2>{pizza.name}</h2>
         <p>{formatMoney(calculatePizzaPrice(pizza.price, anOrder.size))}</p>
