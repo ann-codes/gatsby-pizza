@@ -15,9 +15,17 @@ export default function OrderPage({ data: { pizzas } }) {
   const zas = pizzas.nodes;
   // custom hooks
   const { values, updateValues } = useForm({ name: '', email: '' });
-  const { order, addToOrder, removeFromOrder } = usePizza({
+  const {
+    order,
+    addToOrder,
+    removeFromOrder,
+    error,
+    loading,
+    message,
+    submitOrder,
+  } = usePizza({
     zas,
-    inputs: values,
+    values,
   });
   const listPizzas = pizzas.nodes.map((za) => (
     <MenuItemStyles key={za.id}>
@@ -39,11 +47,15 @@ export default function OrderPage({ data: { pizzas } }) {
     </MenuItemStyles>
   ));
 
+  if (message) {
+    return <p>{message}</p>;
+  }
+
   return (
     <div>
       <SEO title="Order a Pizza!" />
-      <OrderStyles>
-        <fieldset>
+      <OrderStyles onSubmit={submitOrder}>
+        <fieldset disabled={loading}>
           <legend>Your Info</legend>
           <label htmlFor="name">Name: </label>
           <input
@@ -62,11 +74,11 @@ export default function OrderPage({ data: { pizzas } }) {
             onChange={updateValues}
           />
         </fieldset>
-        <fieldset className="menu">
+        <fieldset className="menu" disabled={loading}>
           <legend>Menu</legend>
           {listPizzas}
         </fieldset>
-        <fieldset className="order">
+        <fieldset className="order" disabled={loading}>
           <legend>Order</legend>
           <PizzaOrder
             order={order}
@@ -74,8 +86,12 @@ export default function OrderPage({ data: { pizzas } }) {
             pizzas={zas}
           />
         </fieldset>
-        <fieldset>
+        <fieldset disabled={loading}>
           <h3>Total: {formatMoney(calculateOrderTotal(order, zas))}</h3>
+          <div>{error ? <p>Error: {error}</p> : ''}</div>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Placing Order...' : 'Order Ahead'}
+          </button>
         </fieldset>
       </OrderStyles>
     </div>
