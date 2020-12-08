@@ -38,8 +38,16 @@ const wait = (ms = 0) =>
   });
 
 exports.handler = async (event, context) => {
-  // await wait(5000);
   const body = JSON.parse(event.body);
+
+  // check if filled out honeypot (deter spam)
+  if (body.mapleSyrup) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ message: 'error 218973 - GOTCHA! GO AWAY' }),
+    };
+  }
+  // await wait(5000);
   const requiredFields = ['email', 'name', 'order'];
 
   for (const field of requiredFields) {

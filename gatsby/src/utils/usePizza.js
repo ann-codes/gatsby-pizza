@@ -31,6 +31,7 @@ export default function usePizza({ zas, values }) {
       total: formatMoney(calculateOrderTotal(order, zas)),
       name: values.name,
       email: values.email,
+      mapleSyrup: values.mapleSyrup
     };
     const res = await fetch(
       `${process.env.GATSBY_SERVERLESS_BASE}/placeOrder`,
