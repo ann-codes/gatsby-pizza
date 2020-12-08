@@ -1,11 +1,1 @@
-{
-  "data": {
-    "site": {
-      "siteMetadata": {
-        "title": "Slick's Slices",
-        "description": "The best pizza place in the world, yay!",
-        "twitter": "@anncodes"
-      }
-    }
-  }
-}
+{"data":{"site":{"siteMetadata":{"title":"Slick's Slices","description":"The best pizza place in the world, yay!","twitter":"@anncodes"}}}}
